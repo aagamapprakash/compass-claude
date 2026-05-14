@@ -1,0 +1,95 @@
+I want to restyle the entire app UI to match a cinematic, premium travel-photography aesthetic inspired by Pinterest moodboards: Paris rooftops, cozy cafés, warm sunsets, mountain adventures, and quiet library interiors. The overall vibe should feel editorial, clean, modern, and image-driven, not like a generic SaaS template.
+
+Make the following stylistic changes globally:
+
+1. Color System (Use sparingly)
+
+Primary: deep navy blue #0A2A43
+
+Background: #FFFFFF
+
+Accent 1 (maroon): #7A1F2D
+
+Accent 2 (gold): #D4A259
+
+Neutral grays: very soft, low-contrast (#F7F7F7, #EBEBEB)
+
+Use accent colors only for micro-interactions (hover states, small icons, CTA buttons), not for backgrounds.
+
+2. Typography
+
+Headings: serif, magazine/editorial style (e.g., “Playfair Display”, “Cormorant”, or an equivalent variable serif font).
+
+Body text: clean sans-serif (e.g., Inter, SF Pro, or similar).
+
+Increase line height and spacing—give everything breathing room.
+
+Headlines should feel like travel magazine covers: big, elegant, airy.
+
+3. Layout + Spacing
+
+Use larger margins and more white space everywhere; nothing should feel dense.
+
+Section padding: use py-20 minimum.
+
+Card layouts should resemble Pinterest masonry boards: mixed portrait and square images, airy spacing (gap-6, gap-8).
+
+Use subtle rounded corners (rounded-2xl or rounded-3xl) for cards and images.
+
+4. Imagery Style
+
+The UI should be photography-first:
+
+Full-bleed hero images
+
+Soft natural light
+
+High-contrast landscapes
+
+Warm color temperature
+
+Real travel vibes: cafés, scenic POVs, sunsets, city rooftops, cozy interiors
+
+Make images “feel alive”—use depth, bring them close to the user.
+
+5. Component Style Updates
+
+Apply this styling across all pages:
+
+Nav Bar
+
+Transparent over hero images; becomes solid navy after scrolling.
+
+Use serif logo type or simple compass icon.
+
+Minimal—no heavy borders, just spacing.
+
+Cards (Feed, Profile History, Bucketlist)
+
+Soft shadows: shadow-md or shadow-lg with low opacity
+
+Rounded corners: rounded-3xl
+
+Use thin borders: border border-neutral-200
+
+Feature large images with minimal text.
+
+Buttons
+
+Maroon or gold background
+
+White text
+
+Rounded-full (pill shape)
+
+Slight drop shadow to create depth
+
+Hover: subtle darkening, not neon
+
+Inputs (Add Post Page)
+
+Minimalist, border-only fields: border border-neutral-300 rounded-xl px-4 py-3
+
+No harsh boxes; soft focus ring: focus:ring-gold-400
+
+Text areas should feel like journaling—large, airy.

@@ -36,6 +36,19 @@ export function registerAuthRoutes(app: Express) {
   });
 }
 
+// Like isAuthenticated but never rejects — just attaches req.user if a valid token is present.
+export const optionalAuth: RequestHandler = async (req, _res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader?.startsWith("Bearer ")) {
+    const token = authHeader.slice(7);
+    const { data, error } = await supabaseAdmin.auth.getUser(token);
+    if (!error && data.user) {
+      (req as any).user = { id: data.user.id };
+    }
+  }
+  next();
+};
+
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) {

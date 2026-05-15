@@ -1,7 +1,7 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
+import { setupAuth, registerAuthRoutes, isAuthenticated, optionalAuth } from "./auth";
 import { insertTripSchema, insertTripStopSchema, insertExpenseSchema, expenseSplits as expenseSplitsTable } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -1068,7 +1068,7 @@ export async function registerRoutes(
     }
   });
 
-  app.get('/api/users/:id/trips', async (req: Request, res: Response) => {
+  app.get('/api/users/:id/trips', optionalAuth, async (req: Request, res: Response) => {
     try {
       const userId = req.params.id;
       const currentUserId = (req as any).user?.id;

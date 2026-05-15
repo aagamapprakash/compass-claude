@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, User, MapPin, Calendar, Compass, Sparkles, Users, UserPlus, UserMinus, Heart } from 'lucide-react';
+import { ArrowLeft, User, MapPin, Compass, Sparkles, Users, UserPlus, UserMinus, Heart } from 'lucide-react';
 import { Link } from 'wouter';
 import TripCard, { type Trip } from '@/components/TripCard';
 import { getStatusFromDates, type TripStatus } from '@/components/StatusBadge';
@@ -41,6 +41,7 @@ export default function ProfilePage({ userId }: ProfilePageProps) {
   const { data: userTrips = [], isLoading: tripsLoading } = useQuery<(Trip & { likeCount?: number; isLiked?: boolean })[]>({
     queryKey: ['/api/users', userId, 'trips'],
     enabled: !!profileUser,
+    staleTime: 0,
   });
 
   const { data: followStats } = useQuery<FollowStats>({

@@ -40,6 +40,7 @@ export default function NewTrip() {
     },
     onSuccess: (trip) => {
       queryClient.invalidateQueries({ queryKey: ['/api/trips'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/users', trip.userId, 'trips'] });
       toast({
         title: 'Journey created!',
         description: `Your trip to ${trip.destination} has been saved.`,

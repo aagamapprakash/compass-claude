@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sidebar, SidebarBody, SidebarLink } from '@/components/ui/animated-sidebar';
-import { Compass, Search, PlusCircle, User, LogOut, Bell, Globe, Heart } from 'lucide-react';
+import { Compass, Search, PlusCircle, User, LogOut, Bell } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { AuthModal } from '@/components/AuthModal';
@@ -17,10 +17,8 @@ import LandingPage from '@/pages/LandingPage';
 import SearchPage from '@/pages/SearchPage';
 import DestinationPage from '@/pages/DestinationPage';
 import NotificationsPage from '@/pages/NotificationsPage';
-import ExplorePage from '@/pages/ExplorePage';
-import SocialFeedPage from '@/pages/SocialFeedPage';
 import InvitePage from '@/pages/InvitePage';
-import NotFound from '@/pages/not-found';
+import NotFound from '@/pages/NotFound';
 
 function AppContent() {
   const [location] = useLocation();
@@ -42,16 +40,6 @@ function AppContent() {
       label: "Search",
       href: "/search",
       icon: <Search className="text-white/80 h-5 w-5 flex-shrink-0" />,
-    },
-    {
-      label: "Explore",
-      href: "/explore",
-      icon: <Globe className="text-white/80 h-5 w-5 flex-shrink-0" />,
-    },
-    {
-      label: "Community",
-      href: "/community",
-      icon: <Heart className="text-white/80 h-5 w-5 flex-shrink-0" />,
     },
     ...(isAuthenticated ? [
       {
@@ -203,17 +191,11 @@ function AppContent() {
           <Route path="/profile/:id">
             {(params) => <ProfilePage userId={params.id} />}
           </Route>
-          <Route path="/community">
-            <SocialFeedPage />
-          </Route>
           <Route path="/destination/:name">
             <DestinationPage />
           </Route>
           <Route path="/notifications">
             <NotificationsPage />
-          </Route>
-          <Route path="/explore">
-            <ExplorePage />
           </Route>
           <Route path="/invite/:code">
             {(params) => <InvitePage code={params.code} />}

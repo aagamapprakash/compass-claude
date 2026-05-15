@@ -7,3 +7,6 @@ vite.config.ts.*
 .env
 .env.local
 .env.*.local
+.local/
+.agents/
+attached_assets/Pasted-*.txt

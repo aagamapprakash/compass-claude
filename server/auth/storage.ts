@@ -1,5 +1,5 @@
 import { users, trips, tripMembers, joinRequests, follows, tripLikes, expenses, expenseSplits, type User, type UpsertUser } from "@shared/schema";
-import { db } from "../../db";
+import { db } from "../db";
 import { eq, sql } from "drizzle-orm";
 
 export interface IAuthStorage {

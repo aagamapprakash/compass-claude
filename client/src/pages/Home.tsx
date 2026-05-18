@@ -8,10 +8,9 @@ import { NeonButton } from '@/components/ui/neon-button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Compass, ArrowRight, MapPin, Sparkles, Star, Users, GraduationCap, Plane, ChevronRight, Globe } from 'lucide-react';
+import { Compass, MapPin, Search, Star, Users, GraduationCap, Plane, ChevronRight, Globe } from 'lucide-react';
 import { Link } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
-import heroImage from '@assets/stock_images/paris_rooftops_at_go_b23dacab.jpg';
 
 interface FeedTrip extends Trip {
   likeCount: number;
@@ -245,100 +244,60 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-
-        <div className="absolute inset-0">
-          <img 
-            src={heroImage} 
-            alt="Paris rooftops at golden hour" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 hero-overlay" />
-        </div>
-        
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8 animate-fade-in-up">
-            <Sparkles className="h-4 w-4 text-compass-gold" />
-            <span className="text-sm font-medium text-white/90">Discover your next adventure</span>
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight tracking-tight animate-fade-in-up-delay">
-            Where Will Your
-            <br />
-            <span className="text-gradient-gold">Journey</span> Take You?
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up-delay-2">
-            Plan extraordinary trips, invite your favorite people, and create memories that last a lifetime.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up-delay-2">
-            {isAuthenticated ? (
-              <Link href="/new">
-                <NeonButton 
-                  variant="maroon"
-                  size="xl"
-                  neonColor="gold"
-                  className="flex items-center gap-2 shadow-editorial"
-                  data-testid="button-plan-journey"
-                >
-                  <MapPin className="h-5 w-5" />
-                  Plan Your Journey
-                  <ArrowRight className="h-5 w-5" />
-                </NeonButton>
-              </Link>
-            ) : (
-              <a href="/api/login">
-                <NeonButton 
-                  variant="maroon"
-                  size="xl"
-                  neonColor="gold"
-                  className="flex items-center gap-2 shadow-editorial"
-                  data-testid="button-get-started"
-                >
-                  Get Started
-                  <ArrowRight className="h-5 w-5" />
-                </NeonButton>
-              </a>
-            )}
-            <Link href="/search">
-              <NeonButton 
-                variant="ghost"
-                size="xl"
-                neonColor="gold"
-                className="flex items-center gap-2 text-white/90 hover:bg-white/10"
-                data-testid="button-explore"
-              >
-                Explore Journeys
-              </NeonButton>
-            </Link>
-          </div>
-        </div>
-        
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center pt-2">
-            <div className="w-1.5 h-3 rounded-full bg-white/60" />
-          </div>
-        </div>
-      </section>
-
       <Tabs defaultValue="discover">
         <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50">
           <div className="max-w-7xl mx-auto px-6">
-            <TabsList className="h-auto bg-transparent p-0 rounded-none gap-0">
-              <TabsTrigger
-                value="discover"
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-compass-navy data-[state=active]:text-compass-navy data-[state=active]:bg-transparent data-[state=active]:shadow-none pb-3 pt-3 px-6 font-medium text-muted-foreground"
-              >
-                Discover
-              </TabsTrigger>
-              <TabsTrigger
-                value="community"
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-compass-navy data-[state=active]:text-compass-navy data-[state=active]:bg-transparent data-[state=active]:shadow-none pb-3 pt-3 px-6 font-medium text-muted-foreground"
-              >
-                Community
-              </TabsTrigger>
-            </TabsList>
+            <div className="flex items-center justify-between gap-4">
+              <TabsList className="h-auto bg-transparent p-0 rounded-none gap-0">
+                <TabsTrigger
+                  value="discover"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-compass-navy data-[state=active]:text-compass-navy data-[state=active]:bg-transparent data-[state=active]:shadow-none pb-3 pt-3 px-6 font-medium text-muted-foreground"
+                >
+                  Discover
+                </TabsTrigger>
+                <TabsTrigger
+                  value="community"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-compass-navy data-[state=active]:text-compass-navy data-[state=active]:bg-transparent data-[state=active]:shadow-none pb-3 pt-3 px-6 font-medium text-muted-foreground"
+                >
+                  Community
+                </TabsTrigger>
+              </TabsList>
+
+              <div className="flex items-center gap-3 py-2">
+                <Link href="/search">
+                  <div className="flex items-center gap-2 px-3 py-1.5 border border-border/60 bg-background text-muted-foreground hover:border-foreground/40 hover:text-foreground transition-colors cursor-pointer w-48" data-testid="input-search-bar">
+                    <Search className="h-3.5 w-3.5 flex-shrink-0" />
+                    <span className="font-mono text-xs tracking-wide truncate">Search places, trips…</span>
+                  </div>
+                </Link>
+                {isAuthenticated ? (
+                  <Link href="/new">
+                    <NeonButton
+                      variant="solid"
+                      size="sm"
+                      neonColor="gold"
+                      className="flex items-center gap-1.5 whitespace-nowrap"
+                      data-testid="button-plan-journey"
+                    >
+                      <MapPin className="h-3.5 w-3.5" />
+                      Plan Your Journey
+                    </NeonButton>
+                  </Link>
+                ) : (
+                  <a href="/api/login">
+                    <NeonButton
+                      variant="solid"
+                      size="sm"
+                      neonColor="gold"
+                      className="flex items-center gap-1.5 whitespace-nowrap"
+                      data-testid="button-get-started"
+                    >
+                      Plan Your Journey
+                    </NeonButton>
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -348,32 +307,32 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div className="animate-fade-in-up">
-              <div className="inline-flex items-center gap-2 bg-compass-gold/10 rounded-full px-4 py-2 mb-4">
-                <GraduationCap className="h-4 w-4 text-compass-gold" />
-                <span className="text-compass-gold text-sm font-medium">Study Abroad Destinations</span>
+              <div className="flex items-center gap-2 mb-3">
+                <GraduationCap className="h-3.5 w-3.5 text-primary" />
+                <span className="font-mono text-xs uppercase tracking-widest text-primary">Study Abroad Destinations</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-compass-navy mb-3">
+              <h2 className="text-4xl md:text-5xl font-serif font-semibold text-foreground mb-3">
                 Popular Destinations
               </h2>
-              <p className="text-muted-foreground text-lg max-w-xl">
+              <p className="text-muted-foreground text-base max-w-xl">
                 Explore the world's most popular study abroad destinations and plan your next adventure.
               </p>
             </div>
             
-            <Badge className="bg-compass-gold/10 text-compass-gold border-compass-gold/20 self-start md:self-auto">
+            <span className="font-mono text-xs border border-foreground/30 px-2 py-1 uppercase tracking-wider self-start md:self-auto">
               {destinationsData?.destinations.length || 12} Cities
-            </Badge>
+            </span>
           </div>
 
           {destinationsError && (
             <div className="text-center py-12">
-              <div className="h-20 w-20 rounded-3xl bg-compass-maroon/10 mx-auto mb-4 flex items-center justify-center">
-                <MapPin className="h-10 w-10 text-compass-maroon/50" />
+              <div className="h-16 w-16 border-2 border-foreground/20 mx-auto mb-4 flex items-center justify-center">
+                <MapPin className="h-8 w-8 text-foreground/25" />
               </div>
-              <h3 className="text-lg font-semibold text-compass-navy mb-2">
+              <h3 className="text-lg font-serif font-semibold text-foreground mb-2">
                 Unable to load destinations
               </h3>
-              <p className="text-muted-foreground">
+              <p className="font-mono text-xs text-muted-foreground uppercase tracking-wider">
                 Please try again later or check your connection.
               </p>
             </div>
@@ -400,13 +359,11 @@ export default function Home() {
 
       {destinationsData?.destinations && destinationsData.destinations.length > 0 && (
         <section className="max-w-7xl mx-auto px-6 py-12 border-t border-border/50">
-          <div className="mb-8">
-            <h2 className="text-2xl font-serif font-semibold text-compass-navy">
+          <div className="mb-8 border-b border-foreground/10 pb-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-primary block mb-1">Landmarks</span>
+            <h2 className="text-2xl font-serif font-semibold text-foreground">
               Must-See Attractions
             </h2>
-            <p className="text-muted-foreground mt-1">
-              Iconic landmarks and experiences you can't miss
-            </p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -424,13 +381,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div className="animate-fade-in-up">
-              <span className="text-compass-gold font-medium text-sm uppercase tracking-wider mb-2 block">
-                Explore
+              <span className="font-mono text-xs uppercase tracking-widest text-primary mb-2 block">
+                The Archive
               </span>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-compass-navy mb-3">
+              <h2 className="text-4xl md:text-5xl font-serif font-semibold text-foreground mb-3">
                 Recent Journeys
               </h2>
-              <p className="text-muted-foreground text-lg max-w-xl">
+              <p className="text-muted-foreground text-base max-w-xl">
                 Discover where fellow travelers are venturing and find inspiration for your next adventure.
               </p>
             </div>
@@ -457,13 +414,13 @@ export default function Home() {
             </div>
           ) : (
             <div className="text-center py-24 animate-fade-in">
-              <div className="inline-flex items-center justify-center h-24 w-24 rounded-3xl bg-compass-navy/5 mb-8">
-                <Compass className="h-12 w-12 text-compass-navy/30" />
+              <div className="inline-flex items-center justify-center h-20 w-20 border-2 border-foreground/20 mb-8">
+                <Compass className="h-10 w-10 text-foreground/25" />
               </div>
-              <h3 className="text-2xl font-serif font-semibold text-compass-navy mb-3">
+              <h3 className="text-2xl font-serif font-semibold text-foreground mb-3">
                 No journeys yet
               </h3>
-              <p className="text-muted-foreground mb-10 max-w-md mx-auto text-lg">
+              <p className="text-muted-foreground mb-10 max-w-md mx-auto text-base">
                 {filter === 'all' 
                   ? "Be the first to share your adventure and inspire others!" 
                   : `No ${filter} journeys to show right now.`}
@@ -488,11 +445,12 @@ export default function Home() {
       </section>
 
       <section className="max-w-4xl mx-auto px-6 py-16 text-center">
-        <SpotlightCard glowColor="maroon" className="py-12 px-8">
-          <h2 className="text-3xl font-serif font-bold text-compass-navy mb-4">
+        <SpotlightCard glowColor="maroon" className="py-12 px-8 border-2 border-foreground hard-shadow">
+          <span className="font-mono text-xs uppercase tracking-widest text-primary block mb-3">Start Here</span>
+          <h2 className="text-3xl font-serif font-semibold text-foreground mb-4">
             Ready to Plan Your Journey?
           </h2>
-          <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+          <p className="text-muted-foreground mb-6 max-w-xl mx-auto text-sm">
             Create your travel itinerary, invite friends, and start your adventure today.
           </p>
           {isAuthenticated ? (
@@ -528,14 +486,17 @@ export default function Home() {
 
         <TabsContent value="community" className="mt-0">
           <div className="max-w-6xl mx-auto px-4 py-8">
-            <div className="text-center mb-10">
-              <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-compass-navy to-compass-maroon mb-4 shadow-soft">
-                <Globe className="h-8 w-8 text-white" />
+            <div className="mb-10 border-b-2 border-foreground/10 pb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 bg-primary border-2 border-foreground flex items-center justify-center">
+                  <Globe className="h-5 w-5 text-white" />
+                </div>
+                <span className="font-mono text-xs uppercase tracking-widest text-primary">The Community</span>
               </div>
-              <h2 className="text-4xl font-serif font-bold text-compass-navy mb-3">
+              <h2 className="text-4xl font-serif font-semibold text-foreground mb-2">
                 Community Trips
               </h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              <p className="text-muted-foreground text-base max-w-2xl">
                 Discover adventures shared by travelers in the community
               </p>
             </div>
@@ -543,17 +504,17 @@ export default function Home() {
             {publicTripsLoading && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[1, 2, 3, 4, 5, 6].map(i => (
-                  <Skeleton key={i} className="h-80 w-full rounded-3xl" />
+                  <Skeleton key={i} className="h-80 w-full" />
                 ))}
               </div>
             )}
 
             {!publicTripsLoading && publicTrips.length === 0 && (
               <div className="text-center py-20">
-                <div className="h-24 w-24 mx-auto mb-6 rounded-full bg-compass-navy/5 flex items-center justify-center">
-                  <Compass className="h-12 w-12 text-compass-navy/30" />
+                <div className="h-20 w-20 mx-auto mb-6 border-2 border-foreground/20 flex items-center justify-center">
+                  <Compass className="h-10 w-10 text-foreground/25" />
                 </div>
-                <h3 className="text-xl font-serif font-semibold text-compass-navy mb-2">
+                <h3 className="text-xl font-serif font-semibold text-foreground mb-2">
                   No public trips yet
                 </h3>
                 <p className="text-muted-foreground max-w-md mx-auto">

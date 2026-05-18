@@ -81,9 +81,29 @@ See `.env.example` for required variables. Key ones:
 - Inline edit for expenses (pencil icon); changing amount recalculates splits
 - API: `GET/POST /api/trips/:id/expenses`, `PATCH/DELETE /api/expenses/:id`, `PATCH /api/expense-splits/:id/settle`, `GET /api/trips/:id/balances`
 
-## Design Tokens
+## Design Tokens (`better-design` branch)
 
-- **Brand colors:** Compass Blue `#00357a`, Maroon `#7B1E3C`, Gold `#F5C542`
-- **Spacing scale:** Tailwind standard (2, 4, 6, 8, 12, 16, 20, 24)
-- **Border radius:** sm 3px, md 6px, lg 9px
-- **Font:** Inter (Google Fonts)
+The `better-design` branch overhauls the visual language to a minimalist analog / neobrutalist aesthetic. The values below reflect the current branch state and differ from `main`.
+
+- **Brand colors (remapped):**
+  - Compass Navy → Sage `#425650` (CSS: `compass-navy`)
+  - Maroon `#7A1F2D` (unchanged, CSS: `compass-maroon`)
+  - Gold `#D4A259` (unchanged, CSS: `compass-gold`)
+  - Added: Ink `#1b1c19` (`compass-ink`), Sage `#5a6e68` (`compass-sage`), Parchment `#fbf9f4` (`compass-parchment`)
+- **Typography:** Newsreader (serif + sans), JetBrains Mono (mono) — loaded via Google Fonts in `client/index.html`
+- **Border radius:** near-sharp corners (`--radius: 0.125rem`); `rounded-3xl` / `rounded-4xl` → `0.25rem`
+- **Shadows:** hard offset shadows (no blur) — `.hard-shadow` (3px 3px), `.hard-shadow-sm` (2px 2px) defined in `client/src/index.css`
+- **Background:** warm parchment `hsl(40 30% 97%)` (`--background`)
+
+## Known Bugs Fixed
+
+### Auth race condition — profile link `/profile/undefined` (fixed in `better-design`)
+After login, `onAuthStateChange` set `isAuthenticated = true` immediately but `fetchProfile` (which populates `user`) is async. During that window the sidebar Profile link resolved to `/profile/undefined` → "Traveler Not Found."
+
+**Fix:** `client/src/hooks/use-auth.ts` — `onAuthStateChange` now sets `isLoading = true` before calling `fetchProfile`, so the loading screen persists until the profile is resolved.
+
+**Fix:** `client/src/App.tsx` — Profile link only rendered when `user` is loaded (`...(user ? [{ href: /profile/${user.id} }] : [])`).
+
+## TypeScript Config
+
+`tsconfig.json` uses `moduleResolution: "bundler"`. The `baseUrl` option was removed (deprecated in TS 6.0, removed in TS 7.0) — `paths` aliases (`@/*`, `@shared/*`) work without it under this resolver.

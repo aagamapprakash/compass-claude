@@ -30,6 +30,7 @@ export function useAuth(): AuthState & { logout: () => Promise<void> } {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
       if (newSession) {
+        setIsLoading(true);
         fetchProfile(newSession);
       } else {
         setUser(null);

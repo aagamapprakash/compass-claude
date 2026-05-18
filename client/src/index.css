@@ -2,84 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
-/* PINTEREST TRAVEL AESTHETIC - Editorial, Cinematic, Premium */
+/* MINIMALIST ANALOG AESTHETIC - Refined Neobrutalism, Paper & Ink */
 :root {
-  --button-outline: rgba(0, 53, 122, 0.12);
-  --badge-outline: rgba(0, 53, 122, 0.06);
+  --button-outline: rgba(27, 28, 25, 0.12);
+  --badge-outline: rgba(27, 28, 25, 0.06);
   --opaque-button-border-intensity: -8;
-  --elevate-1: rgba(0, 53, 122, 0.03);
-  --elevate-2: rgba(0, 53, 122, 0.07);
-  
-  /* Pinterest Travel Color Palette */
-  --background: 40 33% 98%;
-  --foreground: 214 100% 24%;
-  --border: 40 20% 90%;
-  --card: 0 0% 100%;
-  --card-foreground: 214 100% 24%;
-  --card-border: 40 15% 88%;
-  
-  /* Sidebar - Navy base */
-  --sidebar: 214 100% 24%;
-  --sidebar-foreground: 0 0% 100%;
-  --sidebar-border: 214 80% 30%;
-  --sidebar-primary: 214 100% 24%;
+  --elevate-1: rgba(27, 28, 25, 0.03);
+  --elevate-2: rgba(27, 28, 25, 0.07);
+
+  /* Analog Parchment Palette */
+  --background: 40 30% 97%;      /* #fbf9f4 warm parchment */
+  --foreground: 100 5% 11%;      /* #1b1c19 ink */
+  --border: 100 5% 11%;          /* ink borders — all borders are visible */
+  --card: 40 25% 96%;            /* #f5f3ee slightly warmer than bg */
+  --card-foreground: 100 5% 11%;
+  --card-border: 100 5% 20%;
+
+  /* Sidebar - warm dark ink */
+  --sidebar: 100 8% 14%;         /* warm dark (not navy) */
+  --sidebar-foreground: 40 20% 92%;
+  --sidebar-border: 100 5% 20%;
+  --sidebar-primary: 161 14% 42%;   /* sage */
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 214 60% 35%;
-  --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-ring: 39 52% 60%;
-  
-  --popover: 0 0% 100%;
-  --popover-foreground: 214 100% 24%;
-  --popover-border: 40 15% 88%;
-  
-  /* Primary Navy #00357A */
-  --primary: 214 100% 24%;
+  --sidebar-accent: 100 8% 20%;
+  --sidebar-accent-foreground: 40 20% 92%;
+  --sidebar-ring: 161 14% 52%;
+
+  --popover: 40 30% 97%;
+  --popover-foreground: 100 5% 11%;
+  --popover-border: 100 5% 20%;
+
+  /* Primary — Sage #425650 */
+  --primary: 161 14% 29%;
   --primary-foreground: 0 0% 100%;
-  
-  /* Secondary - Soft cream */
-  --secondary: 40 33% 96%;
-  --secondary-foreground: 214 100% 24%;
-  
-  --muted: 40 20% 94%;
-  --muted-foreground: 214 30% 45%;
-  
-  /* Accent - Gold #D4A259 */
-  --accent: 39 52% 60%;
-  --accent-foreground: 214 100% 18%;
-  
-  /* Destructive - Maroon #7A1F2D */
+
+  /* Secondary - warm neutral */
+  --secondary: 40 20% 93%;
+  --secondary-foreground: 100 5% 11%;
+
+  --muted: 40 15% 91%;
+  --muted-foreground: 156 5% 40%;
+
+  /* Accent - Sage light #5a6e68 */
+  --accent: 161 14% 42%;
+  --accent-foreground: 0 0% 100%;
+
+  /* Destructive - Maroon (unchanged) */
   --destructive: 350 60% 30%;
   --destructive-foreground: 0 0% 100%;
-  
-  --input: 40 20% 85%;
-  --ring: 39 52% 60%;
-  
-  --chart-1: 214 100% 24%;
+
+  --input: 40 15% 85%;
+  --ring: 161 14% 42%;
+
+  --chart-1: 161 14% 29%;
   --chart-2: 350 60% 30%;
   --chart-3: 39 52% 60%;
-  --chart-4: 214 60% 45%;
+  --chart-4: 161 14% 45%;
   --chart-5: 350 40% 50%;
-  
-  /* Compass Brand */
-  --compass-navy: 214 100% 24%;
-  --compass-maroon: 350 60% 30%;
-  --compass-gold: 39 52% 60%;
-  
-  --font-sans: "Inter", sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif;
+
+  /* Compass Brand (remapped) */
+  --compass-navy: 161 14% 29%;   /* sage replaces navy */
+  --compass-maroon: 350 60% 30%; /* unchanged */
+  --compass-gold: 39 52% 60%;    /* unchanged */
+
+  --font-sans: "Newsreader", Georgia, serif;
+  --font-serif: "Newsreader", Georgia, serif;
   --font-mono: "JetBrains Mono", monospace;
-  --radius: 0.75rem;
-  
-  /* Soft shadows for Pinterest aesthetic */
-  --shadow-2xs: 0 1px 2px 0 rgba(0, 53, 122, 0.02);
-  --shadow-xs: 0 1px 3px 0 rgba(0, 53, 122, 0.03);
-  --shadow-sm: 0 2px 8px -2px rgba(0, 53, 122, 0.06);
-  --shadow: 0 4px 15px -3px rgba(0, 53, 122, 0.08);
-  --shadow-md: 0 8px 25px -5px rgba(0, 53, 122, 0.1);
-  --shadow-lg: 0 15px 40px -10px rgba(0, 53, 122, 0.12);
-  --shadow-xl: 0 25px 50px -12px rgba(0, 53, 122, 0.15);
-  --shadow-2xl: 0 35px 60px -15px rgba(0, 53, 122, 0.18);
-  
+  --radius: 0rem;                /* sharp corners */
+
+  /* Minimal ambient shadows — depth via borders, not blur */
+  --shadow-2xs: 0 1px 0 0 rgba(27, 28, 25, 0.04);
+  --shadow-xs: 0 1px 2px 0 rgba(27, 28, 25, 0.06);
+  --shadow-sm: 1px 1px 0 0 rgba(27, 28, 25, 0.15);
+  --shadow: 2px 2px 0 0 rgba(27, 28, 25, 0.20);
+  --shadow-md: 3px 3px 0 0 #1b1c19;
+  --shadow-lg: 3px 3px 0 0 #1b1c19;
+  --shadow-xl: 4px 4px 0 0 #1b1c19;
+  --shadow-2xl: 4px 4px 0 0 #1b1c19;
+
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 
@@ -105,51 +105,51 @@
   --opaque-button-border-intensity: 9;
   --elevate-1: rgba(255, 255, 255, 0.05);
   --elevate-2: rgba(255, 255, 255, 0.10);
-  --background: 214 30% 8%;
-  --foreground: 40 20% 95%;
-  --border: 214 20% 18%;
-  --card: 214 25% 11%;
-  --card-foreground: 40 20% 95%;
-  --card-border: 214 20% 16%;
-  --sidebar: 214 30% 10%;
-  --sidebar-foreground: 0 0% 98%;
-  --sidebar-border: 214 20% 16%;
-  --sidebar-primary: 214 80% 55%;
+  --background: 100 8% 9%;
+  --foreground: 40 20% 92%;
+  --border: 40 10% 22%;
+  --card: 100 8% 12%;
+  --card-foreground: 40 20% 92%;
+  --card-border: 40 10% 20%;
+  --sidebar: 100 8% 7%;
+  --sidebar-foreground: 40 20% 92%;
+  --sidebar-border: 100 5% 18%;
+  --sidebar-primary: 161 14% 52%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 214 20% 18%;
-  --sidebar-accent-foreground: 0 0% 95%;
-  --sidebar-ring: 39 52% 55%;
-  --popover: 214 25% 12%;
-  --popover-foreground: 40 20% 95%;
-  --popover-border: 214 20% 18%;
-  --primary: 214 80% 55%;
+  --sidebar-accent: 100 8% 18%;
+  --sidebar-accent-foreground: 40 20% 92%;
+  --sidebar-ring: 161 14% 52%;
+  --popover: 100 8% 11%;
+  --popover-foreground: 40 20% 92%;
+  --popover-border: 40 10% 20%;
+  --primary: 161 14% 52%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 214 15% 18%;
-  --secondary-foreground: 40 20% 95%;
-  --muted: 214 12% 16%;
-  --muted-foreground: 214 15% 60%;
-  --accent: 39 52% 55%;
+  --secondary: 100 8% 16%;
+  --secondary-foreground: 40 20% 92%;
+  --muted: 100 5% 14%;
+  --muted-foreground: 156 5% 58%;
+  --accent: 161 14% 52%;
   --accent-foreground: 0 0% 100%;
   --destructive: 350 60% 45%;
   --destructive-foreground: 0 0% 100%;
-  --input: 214 20% 25%;
-  --ring: 39 52% 55%;
-  --chart-1: 214 80% 60%;
+  --input: 100 5% 20%;
+  --ring: 161 14% 52%;
+  --chart-1: 161 14% 55%;
   --chart-2: 350 60% 55%;
   --chart-3: 39 52% 65%;
-  --chart-4: 214 60% 50%;
+  --chart-4: 161 14% 48%;
   --chart-5: 350 40% 55%;
-  --compass-navy: 214 80% 55%;
+  --compass-navy: 161 14% 52%;
   --compass-maroon: 350 60% 45%;
   --compass-gold: 39 52% 65%;
-  --shadow-2xs: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
-  --shadow-xs: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
-  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.2);
-  --shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 25px -5px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 15px 40px -10px rgba(0, 0, 0, 0.35);
-  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-  --shadow-2xl: 0 35px 60px -15px rgba(0, 0, 0, 0.45);
+  --shadow-2xs: 0 1px 0 0 rgba(0, 0, 0, 0.15);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --shadow-sm: 1px 1px 0 0 rgba(255,255,255,0.08);
+  --shadow: 2px 2px 0 0 rgba(255,255,255,0.06);
+  --shadow-md: 3px 3px 0 0 rgba(255,255,255,0.1);
+  --shadow-lg: 3px 3px 0 0 rgba(255,255,255,0.1);
+  --shadow-xl: 4px 4px 0 0 rgba(255,255,255,0.1);
+  --shadow-2xl: 4px 4px 0 0 rgba(255,255,255,0.1);
 
   --sidebar-primary-border: hsl(var(--sidebar-primary));
   --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -173,11 +173,17 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-serif antialiased bg-background text-foreground;
+    font-feature-settings: "kern" 1, "liga" 1;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
+  }
+
+  /* Mono for interactive metadata */
+  button, input, select, textarea {
+    font-family: inherit;
   }
 }
 
@@ -213,11 +219,11 @@
   
   /* Pill buttons */
   .btn-pill {
-    @apply rounded-full px-6 py-3 font-medium transition-all duration-300;
+    @apply px-6 py-3 font-medium transition-all duration-300;
   }
-  
+
   .btn-pill-sm {
-    @apply rounded-full px-4 py-2 text-sm font-medium transition-all duration-300;
+    @apply px-4 py-2 text-sm font-medium transition-all duration-300;
   }
   
   /* Editorial card hover effect */
@@ -237,13 +243,13 @@
     @apply transition-transform duration-700 ease-out;
   }
   
-  /* Hero overlay gradient */
+  /* Hero overlay gradient — lighter, editorial */
   .hero-overlay {
     background: linear-gradient(
       to bottom,
-      rgba(0, 53, 122, 0.3) 0%,
-      rgba(0, 53, 122, 0.5) 50%,
-      rgba(0, 53, 122, 0.7) 100%
+      rgba(27, 28, 25, 0.15) 0%,
+      rgba(27, 28, 25, 0.35) 55%,
+      rgba(27, 28, 25, 0.6) 100%
     );
   }
   
@@ -333,7 +339,19 @@
     inset: -1px;
   }
   
-  /* Text gradient utility */
+  /* Analog hard-offset shadows (no blur, ink-black offset) */
+  .hard-shadow {
+    box-shadow: 3px 3px 0 0 #1b1c19;
+  }
+  .hard-shadow-sm {
+    box-shadow: 2px 2px 0 0 #1b1c19;
+  }
+  .hard-shadow-active:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 0 #1b1c19;
+  }
+
+  /* Text gradient utility (kept for hero) */
   .text-gradient-gold {
     background: linear-gradient(135deg, #D4A259 0%, #E8C07D 50%, #D4A259 100%);
     -webkit-background-clip: text;

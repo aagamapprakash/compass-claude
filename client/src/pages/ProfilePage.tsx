@@ -1,16 +1,24 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, User, MapPin, Compass, Sparkles, Users, UserPlus, UserMinus, Heart } from 'lucide-react';
+import { ArrowLeft, User, Compass, UserPlus, UserMinus, Heart } from 'lucide-react';
 import { Link } from 'wouter';
-import TripCard, { type Trip } from '@/components/TripCard';
-import { getStatusFromDates, type TripStatus } from '@/components/StatusBadge';
-import { SpotlightCard } from '@/components/ui/spotlight-card';
+import { type Trip } from '@/components/TripCard';
+import { getStatusFromDates } from '@/components/StatusBadge';
 import { useAuth } from '@/hooks/use-auth';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+
+import cafeImage from '@assets/stock_images/cozy_european_cafe_s_9663637c.jpg';
+import mountainImage from '@assets/stock_images/mountain_lake_sunset_16936e1a.jpg';
+import templeImage from '@assets/stock_images/japanese_temple_cher_2cf8bf5d.jpg';
+import coastImage from '@assets/stock_images/italian_coast_amalfi_97bb6be1.jpg';
+
+const travelImages = [cafeImage, mountainImage, templeImage, coastImage];
+
+function getTripImage(id: number): string {
+  return travelImages[id % travelImages.length];
+}
 
 interface ProfileUser {
   id: string;
@@ -61,7 +69,7 @@ export default function ProfilePage({ userId }: ProfilePageProps) {
       queryClient.invalidateQueries({ queryKey: ['/api/users', userId, 'follow-stats'] });
       toast({
         title: followStats?.isFollowing ? 'Unfollowed' : 'Following!',
-        description: followStats?.isFollowing 
+        description: followStats?.isFollowing
           ? `You unfollowed ${displayName}`
           : `You are now following ${displayName}`,
       });
@@ -79,8 +87,9 @@ export default function ProfilePage({ userId }: ProfilePageProps) {
     return (
       <div className="min-h-screen bg-background py-12 md:py-20 px-4">
         <div className="max-w-5xl mx-auto space-y-6">
-          <Skeleton className="h-64 w-full rounded-3xl" />
-          <Skeleton className="h-48 w-full rounded-3xl" />
+          <Skeleton className="h-48 w-full" />
+          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-64 w-full" />
         </div>
       </div>
     );
@@ -90,23 +99,21 @@ export default function ProfilePage({ userId }: ProfilePageProps) {
     return (
       <div className="min-h-screen bg-background py-12 md:py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <Card className="rounded-3xl border-0 shadow-soft-lg bg-white">
-            <CardContent className="py-20 text-center">
-              <div className="inline-flex items-center justify-center h-24 w-24 rounded-3xl bg-compass-navy/5 mb-8">
-                <User className="h-12 w-12 text-compass-navy/30" />
-              </div>
-              <h2 className="text-3xl font-serif font-bold text-compass-navy mb-3">Traveler Not Found</h2>
-              <p className="text-muted-foreground mb-10 text-lg">
-                This profile doesn't exist or has been removed.
-              </p>
-              <Link href="/">
-                <Button className="gap-2 bg-compass-navy text-white rounded-xl" data-testid="button-back-home">
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Explore
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+          <div className="border-2 border-foreground p-12 text-center hard-shadow">
+            <div className="inline-flex items-center justify-center h-20 w-20 border-2 border-foreground mb-6">
+              <User className="h-10 w-10 text-muted-foreground" />
+            </div>
+            <h2 className="text-2xl font-serif font-bold mb-3">Traveler Not Found</h2>
+            <p className="text-muted-foreground font-serif mb-8">
+              This profile doesn't exist or has been removed.
+            </p>
+            <Link href="/">
+              <Button className="gap-2 border-2 border-foreground bg-background text-foreground hard-shadow hover:bg-muted font-mono text-xs rounded-none" data-testid="button-back-home">
+                <ArrowLeft className="h-4 w-4" />
+                Back to Explore
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -116,165 +123,182 @@ export default function ProfilePage({ userId }: ProfilePageProps) {
     ? `${profileUser.firstName}${profileUser.lastName ? ' ' + profileUser.lastName : ''}`
     : profileUser.email || 'Traveler';
 
+  const handle = profileUser.email ? `@${profileUser.email.split('@')[0]}` : `@traveler`;
   const isOwnProfile = currentUser?.id === profileUser.id;
-
-  const groupedTrips: Record<TripStatus, (Trip & { likeCount?: number; isLiked?: boolean })[]> = {
-    current: [],
-    upcoming: [],
-    past: [],
-  };
-
-  userTrips.forEach((trip) => {
-    const status = getStatusFromDates(trip.startDate, trip.endDate);
-    groupedTrips[status].push(trip);
-  });
-
   const totalTrips = userTrips.length;
-  const destinations = new Set(userTrips.map((t) => t.destination.split(',').pop()?.trim())).size;
+
+  const topHighlights = [...userTrips]
+    .sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0))
+    .slice(0, 4);
 
   return (
     <div className="min-h-screen bg-background py-12 md:py-20 px-4 md:px-6">
       <div className="max-w-5xl mx-auto space-y-10">
-        <SpotlightCard glowColor="gold" className="overflow-hidden">
-          <div className="h-32 bg-gradient-to-r from-compass-navy via-compass-maroon to-compass-gold -m-[1px] mt-[-1px] ml-[-1px] mr-[-1px]" />
 
-          <div className="pt-0 pb-8 px-8">
-            <div className="flex flex-col md:flex-row items-center md:items-end gap-6 -mt-16 relative">
-              <Avatar className="h-32 w-32 border-4 border-white shadow-editorial ring-4 ring-compass-gold/30">
-                {profileUser.profileImageUrl && (
-                  <AvatarImage src={profileUser.profileImageUrl} alt={displayName} />
-                )}
-                <AvatarFallback className="bg-gradient-to-br from-compass-navy to-compass-maroon text-white text-5xl font-serif font-bold">
-                  {displayName.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-
-              <div className="text-center md:text-left flex-1 pt-4 md:pt-0">
-                <h1 className="text-3xl md:text-4xl font-serif font-bold text-compass-navy mb-1" data-testid="text-username">
+        {/* Profile Header */}
+        <section className="border-2 border-foreground hard-shadow bg-[hsl(var(--surface-container,40_20%_93%))] p-6 flex flex-col md:flex-row gap-6 items-start">
+          <div className="flex-grow flex flex-col w-full">
+            <div className="flex justify-between items-start">
+              <div>
+                <h1 className="font-serif text-3xl font-bold" data-testid="text-username">
                   {displayName}
                 </h1>
-                <p className="text-muted-foreground font-medium flex items-center justify-center md:justify-start gap-2">
-                  <Sparkles className="h-4 w-4 text-compass-gold" />
-                  Adventure seeker
+                <p className="font-mono text-sm text-muted-foreground mt-1">
+                  {handle}
                 </p>
-                {!isOwnProfile && isAuthenticated && (
-                  <div className="mt-3">
-                    <Button
-                      size="sm"
-                      onClick={() => followMutation.mutate()}
-                      disabled={followMutation.isPending}
-                      className={followStats?.isFollowing 
-                        ? "bg-compass-navy/10 text-compass-navy rounded-xl gap-1.5"
-                        : "bg-compass-navy text-white rounded-xl gap-1.5"
-                      }
-                      variant={followStats?.isFollowing ? "outline" : "default"}
-                      data-testid="button-follow-toggle"
-                    >
-                      {followStats?.isFollowing ? (
-                        <>
-                          <UserMinus className="h-4 w-4" />
-                          Unfollow
-                        </>
-                      ) : (
-                        <>
-                          <UserPlus className="h-4 w-4" />
-                          Follow
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                )}
               </div>
 
-              <div className="grid grid-cols-4 gap-3 text-center">
-                <div className="p-4 rounded-2xl bg-compass-navy/5 min-w-[70px]">
-                  <Compass className="h-5 w-5 mx-auto mb-2 text-compass-navy" />
-                  <p className="text-2xl font-serif font-bold text-compass-navy">{totalTrips}</p>
-                  <p className="text-xs text-muted-foreground font-medium">Journeys</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-compass-maroon/5 min-w-[70px]">
-                  <MapPin className="h-5 w-5 mx-auto mb-2 text-compass-maroon" />
-                  <p className="text-2xl font-serif font-bold text-compass-maroon">{destinations}</p>
-                  <p className="text-xs text-muted-foreground font-medium">Places</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-compass-gold/10 min-w-[70px]">
-                  <Users className="h-5 w-5 mx-auto mb-2 text-compass-gold" />
-                  <p className="text-2xl font-serif font-bold text-compass-navy" data-testid="text-follower-count">{followStats?.followerCount ?? 0}</p>
-                  <p className="text-xs text-muted-foreground font-medium">Followers</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-compass-navy/5 min-w-[70px]">
-                  <Heart className="h-5 w-5 mx-auto mb-2 text-compass-maroon" />
-                  <p className="text-2xl font-serif font-bold text-compass-navy" data-testid="text-following-count">{followStats?.followingCount ?? 0}</p>
-                  <p className="text-xs text-muted-foreground font-medium">Following</p>
-                </div>
+              {isOwnProfile ? (
+                <button className="border-2 border-foreground px-4 py-2 bg-compass-navy text-white font-mono text-xs hard-shadow hover:bg-compass-navy/90 transition-colors">
+                  Edit Record
+                </button>
+              ) : isAuthenticated ? (
+                <Button
+                  size="sm"
+                  onClick={() => followMutation.mutate()}
+                  disabled={followMutation.isPending}
+                  className={`border-2 border-foreground font-mono text-xs rounded-none hard-shadow gap-1.5 ${
+                    followStats?.isFollowing
+                      ? 'bg-background text-foreground hover:bg-muted'
+                      : 'bg-compass-navy text-white hover:bg-compass-navy/90'
+                  }`}
+                  data-testid="button-follow-toggle"
+                >
+                  {followStats?.isFollowing ? (
+                    <><UserMinus className="h-3.5 w-3.5" /> Unfollow</>
+                  ) : (
+                    <><UserPlus className="h-3.5 w-3.5" /> Follow</>
+                  )}
+                </Button>
+              ) : null}
+            </div>
+
+            {/* Stats row */}
+            <div className="flex gap-8 mt-5 border-b border-dashed border-foreground pb-4 w-full">
+              <div className="flex flex-col">
+                <span className="font-serif text-2xl font-bold">{totalTrips}</span>
+                <span className="font-mono text-[11px] uppercase text-muted-foreground">Logs</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-serif text-2xl font-bold" data-testid="text-follower-count">
+                  {followStats?.followerCount ?? 0}
+                </span>
+                <span className="font-mono text-[11px] uppercase text-muted-foreground">Followers</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-serif text-2xl font-bold" data-testid="text-following-count">
+                  {followStats?.followingCount ?? 0}
+                </span>
+                <span className="font-mono text-[11px] uppercase text-muted-foreground">Following</span>
               </div>
             </div>
           </div>
-        </SpotlightCard>
 
-        {groupedTrips.current.length > 0 && (
-          <section className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="h-3 w-3 rounded-full bg-compass-gold shadow-sm animate-pulse" />
-              <h2 className="text-2xl font-serif font-semibold text-compass-navy">Currently Traveling</h2>
-            </div>
-            <div className="masonry-grid">
-              {groupedTrips.current.map((trip, idx) => (
-                <div key={trip.id} className={`masonry-item animate-fade-in-up stagger-${idx + 1}`}>
-                  <TripCard trip={trip} showUser={false} showLikes={true} />
-                </div>
-              ))}
+          {/* Square portrait */}
+          <div className="w-28 h-28 border-2 border-foreground flex-shrink-0 overflow-hidden">
+            {profileUser.profileImageUrl ? (
+              <img
+                src={profileUser.profileImageUrl}
+                alt={displayName}
+                className="w-full h-full object-cover grayscale-[50%] contrast-125"
+              />
+            ) : (
+              <div className="w-full h-full bg-compass-navy/10 flex items-center justify-center">
+                <span className="font-serif text-4xl font-bold text-compass-navy">
+                  {displayName.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Top Highlights */}
+        {!tripsLoading && topHighlights.length > 0 && (
+          <section className="flex flex-col gap-4">
+            <h2 className="font-serif text-xl font-bold border-b-2 border-foreground pb-2 w-fit">
+              Top Highlights
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {topHighlights.map((trip) => {
+                const dateLabel = new Date(trip.startDate)
+                  .toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+                  .toUpperCase();
+                return (
+                  <Link key={trip.id} href={`/trip/${trip.id}`}>
+                    <article className="border-2 border-foreground hard-shadow bg-background p-1.5 flex flex-col gap-1.5 group cursor-pointer hover:bg-muted/30 transition-colors">
+                      <div className="aspect-[3/4] border border-foreground overflow-hidden relative">
+                        <img
+                          src={getTripImage(trip.id)}
+                          alt={trip.destination}
+                          className="w-full h-full object-cover grayscale-[30%] group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute top-2 right-2 bg-background border border-foreground px-1 py-0.5">
+                          <span className="font-mono text-[10px]">{dateLabel}</span>
+                        </div>
+                      </div>
+                      <div className="pt-0.5">
+                        <h3 className="font-mono text-xs font-bold truncate">{trip.destination}</h3>
+                        <div className="flex items-center gap-1 mt-1 text-muted-foreground">
+                          <Heart className="h-3 w-3" />
+                          <span className="font-mono text-[10px]">{trip.likeCount ?? 0}</span>
+                        </div>
+                      </div>
+                    </article>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}
 
-        {groupedTrips.upcoming.length > 0 && (
-          <section className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="h-3 w-3 rounded-full bg-compass-navy shadow-sm" />
-              <h2 className="text-2xl font-serif font-semibold text-compass-navy">
-                Upcoming Adventures ({groupedTrips.upcoming.length})
-              </h2>
+        {/* Complete Ledger */}
+        {!tripsLoading && userTrips.length > 0 && (
+          <section className="flex flex-col gap-4">
+            <div className="flex justify-between items-end border-b-2 border-foreground pb-2">
+              <h2 className="font-serif text-xl font-bold">Complete Ledger</h2>
+              <div className="flex gap-2">
+                <button className="border border-foreground px-2 py-1 bg-background font-mono text-[11px] flex items-center gap-1 hover:bg-muted transition-colors">
+                  Filter
+                </button>
+                <button className="border border-foreground px-2 py-1 bg-background font-mono text-[11px] flex items-center gap-1 hover:bg-muted transition-colors">
+                  Sort
+                </button>
+              </div>
             </div>
-            <div className="masonry-grid">
-              {groupedTrips.upcoming.map((trip, idx) => (
-                <div key={trip.id} className={`masonry-item animate-fade-in-up stagger-${idx + 1}`}>
-                  <TripCard trip={trip} showUser={false} showLikes={true} />
-                </div>
+
+            <div className="border-2 border-foreground hard-shadow grid grid-cols-2 md:grid-cols-4">
+              {userTrips.map((trip) => (
+                <Link key={trip.id} href={`/trip/${trip.id}`}>
+                  <div className="aspect-square overflow-hidden border border-foreground">
+                    <img
+                      src={getTripImage(trip.id)}
+                      alt={trip.destination}
+                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+                    />
+                  </div>
+                </Link>
               ))}
             </div>
+
+            <button className="border-2 border-foreground w-full py-3 bg-background font-mono text-xs hard-shadow hover:bg-muted transition-colors text-center">
+              Load Older Archives
+            </button>
           </section>
         )}
 
-        {groupedTrips.past.length > 0 && (
-          <section className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="h-3 w-3 rounded-full bg-compass-maroon shadow-sm" />
-              <h2 className="text-2xl font-serif font-semibold text-compass-navy">
-                Past Journeys ({groupedTrips.past.length})
-              </h2>
-            </div>
-            <div className="masonry-grid">
-              {groupedTrips.past.map((trip, idx) => (
-                <div key={trip.id} className={`masonry-item animate-fade-in-up stagger-${idx + 1}`}>
-                  <TripCard trip={trip} showUser={false} showLikes={true} />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
+        {/* Empty state */}
         {userTrips.length === 0 && !tripsLoading && (
-          <SpotlightCard glowColor="navy" className="py-16 text-center">
-            <div className="h-24 w-24 rounded-3xl bg-compass-navy/5 mx-auto mb-6 flex items-center justify-center">
-              <Compass className="h-12 w-12 text-compass-navy/30" />
+          <div className="border-2 border-foreground hard-shadow p-12 text-center">
+            <div className="inline-flex items-center justify-center h-20 w-20 border-2 border-foreground mb-6">
+              <Compass className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-serif font-semibold text-compass-navy mb-2">No journeys yet</h3>
-            <p className="text-muted-foreground">
-              {isOwnProfile ? "Start planning your first adventure!" : "This traveler hasn't shared any adventures."}
+            <h3 className="text-xl font-serif font-semibold mb-2">No entries yet</h3>
+            <p className="text-muted-foreground font-serif">
+              {isOwnProfile ? 'Start planning your first adventure!' : "This traveler hasn't shared any adventures."}
             </p>
-          </SpotlightCard>
+          </div>
         )}
+
       </div>
     </div>
   );

@@ -1,10 +1,8 @@
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Users, MapPin, Heart } from 'lucide-react';
+import { Calendar, Heart, MapPin, Users } from 'lucide-react';
 import { Link } from 'wouter';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import TransportIcon, { type TransportMode } from './TransportIcon';
 import StatusBadge, { type TripStatus, getStatusFromDates } from './StatusBadge';
-import { SpotlightCard } from '@/components/ui/spotlight-card';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useAuth } from '@/hooks/use-auth';
 
@@ -37,33 +35,22 @@ interface TripCardProps {
 
 const travelImages = [cafeImage, mountainImage, templeImage, coastImage];
 
-function getDestinationImage(destination: string, id: number): string {
+function getDestinationImage(_destination: string, id: number): string {
   return travelImages[id % travelImages.length];
 }
 
-function formatDateRange(startDate: string, endDate?: string | null): string {
-  const start = new Date(startDate);
-  const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
-  
-  if (!endDate || startDate === endDate) {
-    return start.toLocaleDateString('en-US', options);
-  }
-  
-  const end = new Date(endDate);
-  const startYear = start.getFullYear();
-  const endYear = end.getFullYear();
-  
-  if (startYear === endYear) {
-    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', options)}`;
-  }
-  
-  return `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`;
+function formatLedgerDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  const month = d.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' }).toUpperCase();
+  const year = String(d.getUTCFullYear()).slice(-2);
+  return `${day}.${month}.${year}`;
 }
 
 export default function TripCard({ trip, showUser = true, showLikes = true }: TripCardProps) {
   const status: TripStatus = getStatusFromDates(trip.startDate, trip.endDate);
   const imageUrl = getDestinationImage(trip.destination, trip.id);
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const { data: likeInfo } = useQuery<{ likeCount: number; isLiked: boolean }>({
     queryKey: ['/api/trips', trip.id, 'like-info'],
@@ -95,95 +82,93 @@ export default function TripCard({ trip, showUser = true, showLikes = true }: Tr
     likeMutation.mutate();
   };
 
+  const cityName = trip.destination.split(',')[0];
+
   return (
     <Link href={`/trip/${trip.id}`}>
-      <SpotlightCard 
-        glowColor="gold"
-        className="group cursor-pointer overflow-hidden"
+      <article
+        className="group bg-card border-2 border-foreground hard-shadow hard-shadow-active flex flex-col cursor-pointer transition-transform duration-200 hover:-translate-y-0.5"
         data-testid={`card-trip-${trip.id}`}
       >
-        <div className="relative aspect-[4/3] overflow-hidden rounded-t-3xl -m-[1px] mt-[-1px] ml-[-1px] mr-[-1px]">
-          <img 
+        {/* Image */}
+        <div className="relative h-56 border-b-2 border-foreground overflow-hidden">
+          <img
             src={imageUrl}
             alt={trip.destination}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-500"
           />
-          
-          <div className="absolute inset-0 bg-gradient-to-t from-compass-navy/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          
-          <div className="absolute top-4 right-4">
-            <StatusBadge status={status} />
+
+          {/* Date stamp */}
+          <div className="absolute top-3 right-3 bg-card border border-foreground px-2 py-0.5 font-mono text-xs tracking-wider">
+            {formatLedgerDate(trip.startDate)}
           </div>
-          
-          <div className="absolute bottom-4 left-4 backdrop-blur-md bg-white/90 p-2.5 rounded-2xl shadow-soft border border-white/50">
+
+          {/* Transport icon — bottom left */}
+          <div className="absolute bottom-3 left-3 bg-card border border-foreground p-1.5">
             <TransportIcon mode={trip.transportMode} size="sm" />
           </div>
-          
-          {showLikes && isAuthenticated && (
-            <button
-              onClick={handleLike}
-              className="absolute bottom-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-md bg-white/90 shadow-soft border border-white/50 transition-colors"
-              data-testid={`button-like-trip-${trip.id}`}
-            >
-              <Heart 
-                className={`h-4 w-4 transition-colors ${currentIsLiked ? 'fill-compass-maroon text-compass-maroon' : 'text-compass-navy/60'}`} 
-              />
-              {currentLikeCount > 0 && (
-                <span className="text-xs font-semibold text-compass-navy">{currentLikeCount}</span>
-              )}
-            </button>
-          )}
+        </div>
 
-          {!showLikes && trip.invitedFriends && trip.invitedFriends.length > 0 && (
-            <div className="absolute bottom-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-compass-gold/90 backdrop-blur-sm text-compass-navy shadow-soft">
-              <Users className="h-3.5 w-3.5" />
-              <span className="text-xs font-semibold">
+        {/* Body */}
+        <div className="p-5 flex-grow">
+          {/* Tags row */}
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            <span className="border border-foreground/40 px-2 py-0.5 font-mono text-xs uppercase tracking-wider">
+              {cityName}
+            </span>
+            <StatusBadge status={status} />
+            {trip.invitedFriends && trip.invitedFriends.length > 0 && (
+              <span className="border border-foreground/40 px-2 py-0.5 font-mono text-xs uppercase tracking-wider flex items-center gap-1">
+                <Users className="h-3 w-3" />
                 {trip.invitedFriends.length}
               </span>
-            </div>
-          )}
-        </div>
-        
-        <div className="p-5">
-          <div className="flex items-start gap-2 mb-2">
-            <MapPin className="h-4 w-4 text-compass-gold mt-1 flex-shrink-0" />
-            <h3 className="font-serif text-xl font-semibold text-compass-navy line-clamp-1 group-hover:text-compass-maroon transition-colors duration-300">
-              {trip.destination}
-            </h3>
+            )}
           </div>
-          
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-3">
-            <Calendar className="h-3.5 w-3.5" />
-            <span>{formatDateRange(trip.startDate, trip.endDate)}</span>
+
+          <h3 className="font-serif text-xl font-semibold mb-1.5 group-hover:text-primary transition-colors leading-snug">
+            {trip.destination}
+          </h3>
+
+          <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground mb-3">
+            <Calendar className="h-3 w-3" />
+            <span>{formatLedgerDate(trip.startDate)}{trip.endDate ? ` — ${formatLedgerDate(trip.endDate)}` : ''}</span>
           </div>
-          
+
           {trip.description && (
-            <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-4">
+            <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
               {trip.description}
             </p>
           )}
-          
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            {showUser && trip.username && (
-              <div className="flex items-center gap-3 pt-4 border-t border-border/50 flex-1">
-                <Avatar className="h-8 w-8 ring-2 ring-compass-gold/30">
-                  <AvatarFallback className="bg-gradient-to-br from-compass-navy to-compass-maroon text-white text-xs font-semibold">
-                    {trip.username.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-sm font-medium text-compass-navy">{trip.username}</span>
-              </div>
-            )}
+        </div>
 
-            {showLikes && !isAuthenticated && currentLikeCount > 0 && (
-              <div className="flex items-center gap-1 text-muted-foreground pt-4 border-t border-border/50">
-                <Heart className="h-3.5 w-3.5" />
-                <span className="text-xs font-medium">{currentLikeCount}</span>
+        {/* Footer */}
+        <div className="border-t-2 border-foreground/20 px-5 py-3 flex items-center justify-between bg-secondary/50">
+          <div className="flex items-center gap-4">
+            {showLikes && (
+              <button
+                onClick={handleLike}
+                className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+                data-testid={`button-like-trip-${trip.id}`}
+              >
+                <Heart
+                  className={`h-3.5 w-3.5 transition-colors ${currentIsLiked ? 'fill-compass-maroon text-compass-maroon' : ''}`}
+                />
+                <span>{currentLikeCount > 0 ? currentLikeCount : '—'}</span>
+              </button>
+            )}
+            {showUser && trip.username && (
+              <div className="flex items-center gap-1.5">
+                <MapPin className="h-3 w-3 text-muted-foreground" />
+                <span className="font-mono text-xs text-muted-foreground">{trip.username}</span>
               </div>
             )}
           </div>
+
+          <span className="font-mono text-xs border-b border-foreground/40 hover:border-foreground transition-colors">
+            Read Entry →
+          </span>
         </div>
-      </SpotlightCard>
+      </article>
     </Link>
   );
 }

@@ -47,11 +47,11 @@ function AppContent() {
         href: "/new",
         icon: <PlusCircle className="text-white/80 h-5 w-5 flex-shrink-0" />,
       },
-      {
+      ...(user ? [{
         label: "Profile",
-        href: `/profile/${user?.id}`,
+        href: `/profile/${user.id}`,
         icon: <User className="text-white/80 h-5 w-5 flex-shrink-0" />,
-      },
+      }] : []),
       {
         label: "Notifications",
         href: "/notifications",
@@ -65,19 +65,19 @@ function AppContent() {
   ];
 
   const Logo = () => (
-    <div className="font-normal flex space-x-3 items-center text-sm text-white py-2 relative z-20">
-      <div className="h-10 w-10 bg-gradient-to-br from-compass-gold to-compass-maroon rounded-2xl flex items-center justify-center flex-shrink-0 shadow-soft">
+    <div className="font-normal flex space-x-3 items-center text-sm py-2 relative z-20">
+      <div className="h-10 w-10 bg-primary border-2 border-white/20 flex items-center justify-center flex-shrink-0">
         <Compass className="h-5 w-5 text-white" />
       </div>
-      <span className="font-serif font-bold text-xl text-white whitespace-pre tracking-tight">
+      <span className="font-serif italic font-semibold text-xl text-white/90 whitespace-pre tracking-tight">
         Compass
       </span>
     </div>
   );
 
   const LogoIcon = () => (
-    <div className="font-normal flex space-x-3 items-center text-sm text-white py-2 relative z-20">
-      <div className="h-10 w-10 bg-gradient-to-br from-compass-gold to-compass-maroon rounded-2xl flex items-center justify-center flex-shrink-0 shadow-soft">
+    <div className="font-normal flex space-x-3 items-center text-sm py-2 relative z-20">
+      <div className="h-10 w-10 bg-primary border-2 border-white/20 flex items-center justify-center flex-shrink-0">
         <Compass className="h-5 w-5 text-white" />
       </div>
     </div>
@@ -87,10 +87,10 @@ function AppContent() {
     return (
       <div className="flex items-center justify-center h-screen w-full bg-background">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-16 w-16 bg-gradient-to-br from-compass-gold to-compass-maroon rounded-2xl flex items-center justify-center shadow-soft animate-pulse">
+          <div className="h-16 w-16 bg-primary border-2 border-foreground flex items-center justify-center animate-pulse">
             <Compass className="h-8 w-8 text-white" />
           </div>
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">Loading…</p>
         </div>
       </div>
     );
@@ -125,11 +125,11 @@ function AppContent() {
                     label: displayName,
                     href: `/profile/${user.id}`,
                     icon: (
-                      <Avatar className="h-8 w-8 flex-shrink-0 ring-2 ring-compass-gold/50">
+                      <Avatar className="h-8 w-8 flex-shrink-0 border border-white/30">
                         {user.profileImageUrl && (
                           <AvatarImage src={user.profileImageUrl} alt={displayName} />
                         )}
-                        <AvatarFallback className="bg-gradient-to-br from-compass-gold to-compass-maroon text-white text-xs font-semibold">
+                        <AvatarFallback className="bg-primary text-white font-mono text-xs font-semibold">
                           {(user.firstName || user.email || 'U').charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -139,12 +139,12 @@ function AppContent() {
                 />
                 <button
                   onClick={() => logout()}
-                  className="flex items-center justify-start gap-3 group/sidebar py-3 px-3 rounded-xl transition-colors text-white/70 hover:bg-white/10 hover:text-white w-full mt-2"
+                  className="flex items-center justify-start gap-3 group/sidebar py-3 px-3 transition-colors text-white/60 hover:bg-white/8 hover:text-white/90 w-full mt-2 border border-transparent hover:border-white/10"
                   data-testid="button-logout"
                 >
                   <LogOut className="h-5 w-5 flex-shrink-0" />
                   <span
-                    className={`text-sm font-medium whitespace-pre !p-0 !m-0 transition-opacity ${sidebarOpen ? "inline-block opacity-100" : "hidden opacity-0"}`}
+                    className={`font-mono text-xs uppercase tracking-widest whitespace-pre !p-0 !m-0 transition-opacity ${sidebarOpen ? "inline-block opacity-100" : "hidden opacity-0"}`}
                   >
                     Logout
                   </span>
@@ -153,12 +153,12 @@ function AppContent() {
             ) : (
               <button
                 onClick={() => setAuthOpen(true)}
-                className="flex items-center justify-start gap-3 group/sidebar py-3.5 px-4 rounded-2xl transition-all duration-300 text-white/70 hover:bg-white/10 hover:text-white w-full"
+                className="flex items-center justify-start gap-3 group/sidebar py-3 px-3 transition-colors text-white/60 hover:bg-white/8 hover:text-white/90 w-full border border-white/10"
                 data-testid="button-login"
               >
-                <User className="text-white/80 h-5 w-5 flex-shrink-0" />
+                <User className="text-white/70 h-5 w-5 flex-shrink-0" />
                 <span
-                  className={`text-sm font-medium whitespace-pre !p-0 !m-0 transition-opacity ${sidebarOpen ? "inline-block opacity-100" : "hidden opacity-0"}`}
+                  className={`font-mono text-xs uppercase tracking-widest whitespace-pre !p-0 !m-0 transition-opacity ${sidebarOpen ? "inline-block opacity-100" : "hidden opacity-0"}`}
                 >
                   Sign In
                 </span>

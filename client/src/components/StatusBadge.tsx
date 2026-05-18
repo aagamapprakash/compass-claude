@@ -50,7 +50,7 @@ export default function StatusBadge({ status }: StatusBadgeProps) {
   return (
     <Badge 
       variant="secondary" 
-      className={`${config.className} rounded-full px-3 py-1 text-xs font-medium tracking-wide shadow-soft backdrop-blur-sm`}
+      className={`${config.className} rounded-none px-2 py-0.5 font-mono text-xs uppercase tracking-wider border border-current/30`}
     >
       {config.label}
     </Badge>

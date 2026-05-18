@@ -54,7 +54,7 @@ export default function NotificationsPage() {
               Please sign in to view your notifications.
             </p>
             <a href="/api/login">
-              <Button className="gap-2 bg-compass-navy rounded-xl" data-testid="button-login-redirect">
+              <Button className="gap-2 bg-compass-navy" data-testid="button-login-redirect">
                 Sign In
               </Button>
             </a>
@@ -67,7 +67,7 @@ export default function NotificationsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 md:px-6 py-12">
       <Link href="/">
-        <Button variant="ghost" className="gap-2 text-compass-navy hover:bg-compass-navy/5 rounded-xl mb-6" data-testid="button-back">
+        <Button variant="ghost" className="gap-2 text-compass-navy hover:bg-compass-navy/5 mb-6" data-testid="button-back">
           <ArrowLeft className="h-4 w-4" />
           Back to Journeys
         </Button>

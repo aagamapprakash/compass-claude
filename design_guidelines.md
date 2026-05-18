@@ -1,137 +1,213 @@
-# Design Guidelines: Editorial Travel Photography Social App
+# Design Guidelines: Analog Travel Journal
 
 ## Design Approach
-**Reference-Based**: Pinterest-inspired masonry layouts with editorial magazine aesthetics. Drawing from Condé Nast Traveler's visual storytelling, Pinterest's discovery patterns, and VSCO's premium photography curation. Cinematic, aspirational, not generic.
+**Refined Neobrutalism / Analog Print**: The app feels like a well-worn travel journal — parchment backgrounds, visible ink-black borders, hard offset shadows (no blur), and editorial serif typography. Inspired by analog maps, field ledgers, and letterpress printing. The aesthetic is understated and legible, not flashy or neon.
+
+Key principles:
+- Ink on parchment, not glow on dark glass
+- Borders are **visible** and structural, not decorative ghost lines
+- Hard shadows replace soft blur — offset, not diffuse
+- Near-zero border radius (sharp corners everywhere)
+- Monospace for all metadata, labels, tags, and UI chrome
+- Serif (Newsreader) for all editorial content: headings, body copy, titles
+
+---
 
 ## Color System
-- **Primary Navy**: #00357A (navigation, headers, primary buttons)
-- **White**: #FFFFFF (backgrounds, cards, text on dark)
-- **Maroon Accent**: #7A1F2D (status badges, secondary CTAs, highlights)
-- **Gold Accent**: #D4A259 (premium features, icons, decorative elements)
-- **Neutrals**: Gray-50 to Gray-900 for subtle text hierarchy
 
-## Typography System
-**Fonts**: 
-- **Serif (Headlines)**: Playfair Display - editorial, elegant, aspirational
-- **Sans-Serif (Body)**: Inter - clean, modern, readable
+| Token | Hex | Usage |
+|---|---|---|
+| **Parchment** (background) | `#fbf9f4` | Page background, warm off-white |
+| **Ink** (foreground) | `#1b1c19` | All body text, borders, shadows |
+| **Card** | `#f5f2eb` | Card surfaces (slightly warmer than bg) |
+| **Sidebar** | `#1f2219` | Dark sidebar, warm ink tone |
+| **Sage** (primary) | `#425650` | Navigation, primary buttons, badges |
+| **Sage Light** (accent) | `#5a6e68` | Hover states, secondary accents |
+| **Maroon** | `#7A1F2D` | Past status badge, error states |
+| **Gold** | `#D4A259` | Active/current status badge |
+| **Cream** | `#FAF7F2` | Secondary surfaces |
 
-**Hierarchy**:
-- **Hero Titles**: text-5xl md:text-7xl font-serif font-bold (Playfair)
-- **Section Headers**: text-3xl md:text-4xl font-serif font-semibold
-- **Card Titles**: text-2xl font-serif font-semibold
-- **Body Text**: text-base font-sans (Inter)
-- **Meta/Captions**: text-sm font-sans text-gray-600
-- **Labels**: text-xs font-sans uppercase tracking-wider
+Tailwind custom classes: `text-compass-navy` (sage), `text-compass-maroon`, `text-compass-gold`, `text-compass-ink`, `bg-compass-parchment`.
 
-## Layout System
-**Spacing**: Tailwind units 4, 8, 12, 16, 24, 32 - generous white space throughout
-- **Page Container**: max-w-7xl mx-auto px-6 md:px-12
-- **Section Spacing**: py-24 md:py-32 (editorial breathing room)
-- **Card Padding**: p-6 md:p-8
-- **Masonry Gaps**: gap-6 md:gap-8
+---
 
-**Masonry Grid** (Primary Layout):
-- Use CSS columns or Masonry.js for Pinterest-style layouts
-- Breakpoints: columns-1 sm:columns-2 lg:columns-3 xl:columns-4
-- Variable height cards create organic flow
-- No forced aspect ratios on feed
+## Typography
 
-## Component Library
+**Fonts in use:**
+- **Newsreader** — all headings, body text, editorial copy (Google Fonts, ital,opsz,wght axes)
+- **JetBrains Mono** — all labels, metadata, tags, button text, timestamps, UI chrome
+- **Inter** — fallback only (not used for primary type)
 
-### Navigation Bar
-- Fixed: sticky top-0 z-50 backdrop-blur-lg bg-white/90
-- Height: h-20, logo left (serif wordmark), centered nav links, auth right
-- Links: Navy text with gold underline on hover (transition-all duration-300)
-- Pill-shaped profile avatar with gold ring (ring-2 ring-gold)
+**Key rule:** `font-serif` = Newsreader (editorial). `font-mono` = JetBrains Mono (utility/label).
 
-### Trip/Photo Cards (Masonry Feed)
-**Structure**: Vertical cards with variable heights
-- Border radius: rounded-3xl (soft, premium feel)
-- Shadow: shadow-lg hover:shadow-2xl (subtle, soft)
-- Image: Full-bleed with rounded-t-3xl, natural aspect ratios
-- Overlay gradient on hover: gradient from transparent to navy/80
-- Content: Absolute positioned at bottom with backdrop-blur-md bg-white/90 p-6 rounded-b-3xl
-- Title: text-xl font-serif font-semibold mb-2
-- Location: Gold map pin icon + text-sm
-- Engagement: Small pill badges (saves, likes) with maroon background
-- Hover animation: transform translate-y-[-4px] duration-300
+**Hierarchy:**
+| Role | Classes |
+|---|---|
+| Hero title | `text-5xl md:text-6xl font-serif font-semibold italic text-white` |
+| Section header | `text-2xl md:text-3xl font-serif font-semibold text-foreground` |
+| Card title | `text-xl font-serif font-semibold` |
+| Body copy | `text-base font-serif text-foreground` |
+| Section label | `font-mono text-xs uppercase tracking-widest text-primary` |
+| Meta / date | `font-mono text-xs text-muted-foreground` |
+| Tags / badges | `font-mono text-xs uppercase tracking-wider` |
+| Button text | `font-mono text-xs uppercase tracking-widest` |
+| Ledger date | `font-mono text-xs tracking-wider` — format: `DD.MMM.YY` (e.g. `24.OCT.23`) |
 
-### Hero Section (Home Page)
-**Large Editorial Hero**: min-h-[85vh] with cinematic photography
-- Image: Full-width Paris rooftops/cozy cafés/mountain sunsets
-- Overlay: gradient-to-b from-navy/40 to-navy/70
-- Centered content with max-w-4xl
-- Headline: text-6xl md:text-7xl font-serif text-white mb-6
-- Subheadline: text-xl md:text-2xl text-white/90 mb-12
-- CTA buttons: Pill-shaped (rounded-full px-10 py-4) with backdrop-blur-md bg-white/20 border-2 border-white/40
-- Fade-in animation on mount (opacity-0 animate-fade-in)
+---
 
-### Trip Detail Page
-**Layout**: Full-width hero + two-column content
-- **Hero Image**: aspect-[21/9] rounded-3xl shadow-2xl mb-16 (cinematic destination photo)
-- **Content Grid**: lg:grid-cols-[2fr_1fr] gap-12
-- **Main Column**: 
-  - Transport emoji with gold circle background (w-16 h-16 rounded-full bg-gold/20)
-  - Title: text-4xl md:text-5xl font-serif mb-6
-  - Date range with calendar icon (gold)
-  - Description: text-lg leading-relaxed
-  - Photo gallery: Masonry grid of additional destination images
-- **Sidebar**: 
-  - Sticky top-24
-  - User card with avatar + username (font-serif)
-  - Map: h-80 rounded-3xl shadow-lg
-  - Save button: Pill-shaped maroon with gold icon
+## Shadows & Borders
 
-### Forms (Create Trip)
-**Layout**: max-w-3xl mx-auto with generous spacing
-- Labels: text-sm font-sans uppercase tracking-wider text-gray-700 mb-3
-- Inputs: rounded-2xl border-2 border-gray-200 p-4 focus:border-navy focus:ring-4 focus:ring-navy/10
-- Textareas: min-h-40 rounded-2xl
-- Image upload: Dashed border area (rounded-3xl border-dashed border-2) with gold upload icon
-- Submit: Pill-shaped navy button (rounded-full px-12 py-4 text-lg font-semibold)
+**Hard offset shadow (no blur):**
+```css
+.hard-shadow       { box-shadow: 3px 3px 0 0 #1b1c19; }
+.hard-shadow-sm    { box-shadow: 2px 2px 0 0 #1b1c19; }
+.hard-shadow-active:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 #1b1c19;
+}
+```
+Tailwind: `shadow-hard`, `shadow-hard-sm`.
 
-### User Profile
-**Header**: Full-width with subtle gradient background (navy to maroon)
-- Avatar: w-32 h-32 rounded-full ring-4 ring-gold shadow-xl
-- Username: text-4xl font-serif text-white mb-2
-- Bio: text-lg text-white/80 max-w-2xl
-- Stats: Horizontal pills showing trip count, followers (gold numbers)
+**Border convention:**
+- Cards: `border-2 border-foreground` (ink, 2px)
+- Image dividers within cards: `border-b-2 border-foreground`
+- Tags/chips/badges: `border border-foreground/40`
+- Dividers / footer rows: `border-t-2 border-foreground/20`
+- Sidebar sections: `border-t border-white/10`
 
-**Content**: Tabbed sections (Destinations, Saved, Collections)
-- Tabs: Pill-shaped navigation with maroon active state
-- Content: Masonry grid of trip cards
+**No soft box-shadows on interactive cards.** Use hard shadows only.
+
+---
+
+## Border Radius
+
+Near-zero everywhere:
+```ts
+borderRadius: {
+  sm: "0.0625rem",
+  md: "0.125rem",
+  lg: "0.25rem",
+}
+```
+Default `--radius: 0.125rem`. Use `rounded-none` for cards, badges, buttons. The overall feel is sharp and printed.
+
+---
+
+## Layout
+
+- **Page container:** `max-w-7xl mx-auto px-6 md:px-12`
+- **Section spacing:** `py-16 md:py-24`
+- **Card padding:** `p-5`
+- **Grid:** CSS columns masonry — `columns-1 sm:columns-2 lg:columns-3 xl:columns-4`
+- **Sidebar:** Left fixed sidebar (animated expand/collapse), dark ink background (`bg-sidebar`)
+
+---
+
+## Component Patterns
+
+### Sidebar
+- Background: `bg-sidebar` (`#1f2219` warm ink dark)
+- Logo: flat sage square `bg-primary border-2 border-white/20` containing a compass icon
+- Logo wordmark: `font-serif italic font-semibold text-xl text-white/90`
+- Nav links: `font-mono text-xs uppercase tracking-widest text-white/80`
+- Active link: `border-l-2 border-white/40 bg-white/10`
+- Hover: `hover:bg-white/8 hover:text-white/90`
+- User avatar at bottom: `border border-white/30`, fallback `bg-primary font-mono text-xs`
+- Logout/Sign In: `font-mono text-xs uppercase tracking-widest`
+
+### Trip Card (Analog Ledger Card)
+```
+┌──────────────────────────────────┐  ← border-2 border-foreground hard-shadow
+│  [image: grayscale-20% at rest]  │  ← border-b-2 border-foreground
+│  [transport icon] [DD.MMM.YY]    │  ← absolute, bg-card border border-foreground
+├──────────────────────────────────┤
+│  [CITY]  [STATUS]  [PARTY SIZE]  │  ← mono chips, border border-foreground/40
+│  Full Destination Name           │  ← font-serif text-xl font-semibold
+│  📅 DD.MMM.YY — DD.MMM.YY       │  ← font-mono text-xs muted
+│  Description excerpt…            │  ← font-serif text-sm muted, line-clamp-3
+├──────────────────────────────────┤  ← border-t-2 border-foreground/20 bg-secondary/50
+│  ♥ 12   📍 username              │  ← font-mono text-xs
+│                       Read Entry →│  ← font-mono text-xs border-b border-foreground/40
+└──────────────────────────────────┘
+```
+- Hover: `hover:-translate-y-0.5 transition-transform duration-200`
+- Image: `grayscale-[20%] group-hover:grayscale-0 transition-all duration-500`
+
+### Status Badges
+```tsx
+// rounded-none, font-mono, uppercase
+past:     bg-compass-maroon text-white
+current:  bg-compass-gold text-compass-navy font-semibold
+upcoming: bg-compass-navy text-white   // navy here = sage (#425650)
+```
+All badges: `rounded-none px-2 py-0.5 font-mono text-xs uppercase tracking-wider border border-current/30`
 
 ### Buttons
-**Primary**: Pill-shaped (rounded-full) navy background, white text, gold hover ring
-**Secondary**: Pill-shaped outlined (border-2 border-navy), navy text, maroon hover background
-**On Images**: backdrop-blur-md bg-white/20 border-2 border-white/50
+- **Primary**: `bg-primary text-primary-foreground font-mono text-xs uppercase tracking-widest border-2 border-foreground hard-shadow hard-shadow-active`
+- **Secondary / Ghost**: `border border-foreground/40 font-mono text-xs uppercase tracking-wider hover:bg-foreground/5`
+- **On-image**: `bg-white/20 border border-white/30 font-mono text-xs uppercase tracking-wider backdrop-blur-sm`
+- No pill shapes (`rounded-full`). All buttons are `rounded-none` or `rounded-sm`.
+
+### Forms
+- Inputs: `border-2 border-foreground/40 focus:border-foreground rounded-sm font-serif text-base`
+- Labels: `font-mono text-xs uppercase tracking-wider text-foreground/70 mb-2`
+- Submit: primary button style above
+
+### Tags / Chips
+```tsx
+<span className="border border-foreground/40 px-2 py-0.5 font-mono text-xs uppercase tracking-wider">
+  {value}
+</span>
+```
+
+---
+
+## Hero Section
+
+- Background: full-width travel photo
+- Overlay: `hero-overlay` class — linear gradient top→bottom: `rgba(27,28,25,0.15)` → `rgba(27,28,25,0.60)` (lighter than old navy gradient)
+- Badge above headline: `bg-white/20 border border-white/30 font-mono text-xs uppercase tracking-wider backdrop-blur-sm`
+- Headline: `text-5xl md:text-6xl font-serif font-semibold italic text-white`
+- Sub-copy: `font-serif text-lg md:text-xl text-white/85`
+
+---
 
 ## Images
-**Hero Image**: Paris rooftops at golden hour - aspect-[21/9] with overlay gradient, positioned at top of home page
-**Card Images**: Editorial travel photography (cozy Parisian cafés, mountain sunsets, architectural details, intimate cultural moments) - natural aspect ratios in masonry layout
-**Profile Headers**: Destination collage or favorite travel photo as banner
-**Detail Pages**: Large hero destination image (cinematic composition) + masonry gallery of 6-8 additional photos
-**Empty States**: Illustrated suitcase icon with gold accents
+
+- Trip card images: slight desaturation at rest (`grayscale-[20%]`), full color on hover (`group-hover:grayscale-0`)
+- No aggressive overlays or vignettes on cards
+- Hero: use `.hero-overlay` for text legibility over photography
+- Image borders within cards: `border-b-2 border-foreground` (structural, not decorative)
+
+---
 
 ## Animations
-**Subtle Fade/Slide**:
-- Page load: Stagger fade-in cards (delay increments of 100ms)
-- Scroll reveal: Slide-up with opacity transition (translate-y-8 to translate-y-0)
-- Card hover: Lift effect (transform translate-y-[-4px])
-- Image zoom on hover: scale-105 within container
-- All transitions: transition-all duration-300 ease-out
+
+- Card hover lift: `hover:-translate-y-0.5 transition-transform duration-200` (subtle — 2px)
+- Image desaturation release: `transition-all duration-500`
+- Hard shadow press: `.hard-shadow-active:active { transform: translate(2px,2px); }` (tactile ink-stamp feel)
+- No blur-in, no fade-slide stagger, no neon glow pulses
+
+---
 
 ## Accessibility
-- Focus rings: ring-4 ring-gold/50 on navy elements
+
+- All text on photography uses `.hero-overlay` or `bg-card` chips — never bare text over image
+- Focus rings: `ring-2 ring-foreground/40` (ink tone, not gold neon)
 - Semantic HTML with landmark regions
-- Alt text emphasizing destination and mood
-- High contrast text on photography (always use overlays/backdrops)
+- Alt text on images is descriptive
+
+---
 
 ## Responsive Breakpoints
-- **Mobile**: Single column masonry, stacked nav with drawer
-- **Tablet** (md: 768px): 2-column masonry, horizontal nav
-- **Desktop** (lg: 1024px): 3-4 column masonry, full sidebar layouts
-- **Wide** (xl: 1280px): 4-column masonry, max content width
+
+- **Mobile**: Single column, sidebar collapses to icon-only strip
+- **Tablet** (md: 768px): 2-column cards, sidebar expands on hover
+- **Desktop** (lg: 1024px): 3-column cards, sidebar always visible
+- **Wide** (xl: 1280px): 4-column cards, max content width `max-w-7xl`
+
+---
 
 ## Icons
-**Heroicons** via CDN: Outline style in gold for navigation, solid style in maroon for status
+
+**Lucide React** (already installed). Outline style, `h-4 w-4` or `h-5 w-5`. Color via `text-*` class — no gold fills on nav icons. Use `text-white/80` inside the dark sidebar.

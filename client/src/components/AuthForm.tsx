@@ -113,7 +113,7 @@ export default function AuthForm({
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:text-compass-navy rounded-xl"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:text-compass-navy"
                   onClick={() => setShowPassword(!showPassword)}
                   data-testid="button-toggle-password"
                 >

@@ -130,7 +130,7 @@ export default function SearchPage() {
                   variant={activeTypes.has(type) ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleType(type)}
-                  className={`rounded-full gap-1.5 ${
+                  className={`gap-1.5 ${
                     activeTypes.has(type)
                       ? 'bg-compass-navy text-white'
                       : 'border-compass-navy/20 text-compass-navy'

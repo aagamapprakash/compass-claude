@@ -67,7 +67,7 @@ const SpotlightCard = ({
     const baseStyles: React.CSSProperties & Record<string, string | number> = {
       '--base': base,
       '--spread': spread,
-      '--radius': '24',
+      '--radius': '0',
       '--border': '1',
       '--backdrop': 'hsl(0 0% 100% / 0.95)',
       '--backup-border': 'hsl(0 0% 90% / 0.3)',

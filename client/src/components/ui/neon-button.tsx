@@ -3,7 +3,7 @@ import { VariantProps, cva } from "class-variance-authority";
 import { forwardRef, ButtonHTMLAttributes } from 'react';
 
 const buttonVariants = cva(
-    "relative group border text-foreground mx-auto text-center rounded-full font-medium transition-all duration-300",
+    "relative group border text-foreground mx-auto text-center rounded-md font-medium transition-all duration-300",
     {
         variants: {
             variant: {

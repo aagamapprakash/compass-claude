@@ -111,7 +111,7 @@ export default function TripPage({ tripId }: TripPageProps) {
               This journey doesn't exist or has been removed.
             </p>
             <Link href="/">
-              <Button className="gap-2 bg-compass-navy rounded-xl" data-testid="button-back-home">
+              <Button className="gap-2 bg-compass-navy" data-testid="button-back-home">
                 <ArrowLeft className="h-4 w-4" />
                 Back to Explore
               </Button>
@@ -127,7 +127,7 @@ export default function TripPage({ tripId }: TripPageProps) {
     : null;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 bg-gradient-to-b from-compass-navy/5 to-white min-h-screen">
+    <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 bg-background min-h-screen">
       <TripDetail
         trip={trip}
         currentUser={currentUser}
